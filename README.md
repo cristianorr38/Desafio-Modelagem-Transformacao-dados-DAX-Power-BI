@@ -2,7 +2,7 @@
 
 ![PowerBI](https://img.shields.io/badge/PowerBI-integrado-yellow)
 ![Status](https://img.shields.io/badge/Status-Finalizado-blue)
-![Build](https://img.shields.io/badge/build-passing-success)
+![Build](https://img.shields.io/badge/build-success-success)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI)](https://github.com/cristianorr38/Desafio-DIO-Relatorio-Gerencial-Vendas)
 [![GitHub Stars](https://img.shields.io/github/stars/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI?style=social)](https://github.com/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI)
 ![GitHub last commit](https://img.shields.io/github/last-commit/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI
