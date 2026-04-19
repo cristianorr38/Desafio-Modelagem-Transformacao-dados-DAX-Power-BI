@@ -1,10 +1,12 @@
 # 📊 Desafio DIO - Modelagem e Transformação de dados com DAX no Power BI
 
 ![PowerBI](https://img.shields.io/badge/PowerBI-integrado-yellow)
-![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Status](https://img.shields.io/badge/Status-Finalizado-blue)
 ![Build](https://img.shields.io/badge/build-passing-success)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI)](https://github.com/cristianorr38/Desafio-DIO-Relatorio-Gerencial-Vendas)
 [![GitHub Stars](https://img.shields.io/github/stars/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI?style=social)](https://github.com/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI)
+![GitHub last commit](https://img.shields.io/github/last-commit/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI
+)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 Este repositório contém a resolução do desafio de projeto focado na transformação de uma base de dados *flat* (tabela única) em um modelo **Star Schema**.  
@@ -71,6 +73,69 @@ ADDCOLUMNS (
 
 ---
 
+📐 Diagrama Dimensional (Star Schema)
+
+<img width="1917" height="861" alt="Diagrama_Dimensional_StarSchema_FinancialSample" src="https://github.com/user-attachments/assets/827d4dbc-2554-4d2e-b396-d6f927e71777" /><br>
+
+```erDiagram
+    F_Vendas {
+        int SK_ID
+        int ID_Produto
+        string Produto
+        int Units_Sold
+        float Sales_Price
+        string Discount_Band
+        string Segment
+        string Country
+        float Sales
+        float Profit
+        date Date
+    }
+
+    D_Produtos {
+        int ID_Produto
+        string Produto
+    }
+
+    D_Produtos_Detalhes {
+        int ID_Produto
+        string Discount_Band
+        float Sale_Price
+        int Units_Sold
+        float Manufacturing_Price
+    }
+
+    D_Descontos {
+        string Discount_Band
+        float Percentual
+    }
+
+    D_Detalhes {
+        string Segment
+        string Country
+    }
+
+    D_Calendário {
+        date Date
+        int Ano
+        int Mês
+        int Dia
+    }
+
+    F_Vendas ||--o{ D_Produtos : "referencia"
+    F_Vendas ||--o{ D_Produtos_Detalhes : "referencia"
+    F_Vendas ||--o{ D_Descontos : "referencia"
+    F_Vendas ||--o{ D_Detalhes : "referencia"
+    F_Vendas ||--o{ D_Calendário : "referencia"
+```
+
+---
+
+## 📊 Progresso do projeto
+
+Progresso atual:  
+`███████████████████████` **100% Concluído**
+
 ## 🚀 Como Visualizar o Projeto
 
 1. Clone este repositório.  
@@ -79,7 +144,20 @@ ADDCOLUMNS (
 
 ---
 
+# 📦 Release Notes - v1.0.0
+
+## 🎯 Título
+Versão Final - Desafio-Modelagem-Transformacao-dados-DAX-Power-BI
+
+---
+
 ## 👨‍💻 Autor
 
 **Cristiano**  
 Analista de Sistemas focado em **Data Science** e **Engenharia de Dados**.
+
+---
+
+## 📜 Licença
+Este projeto está licenciado sob a **MIT License**.  
+Sinta-se livre para usar, modificar e compartilhar, mantendo os créditos ao autor.
