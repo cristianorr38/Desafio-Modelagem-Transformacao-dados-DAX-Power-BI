@@ -1,12 +1,11 @@
-# 📊 Desafio DIO - Modelagem e Transformação de dados com DAX no Power BI
+## 📊 Desafio DIO - Modelagem e Transformação de dados com DAX no Power BI
 
 ![PowerBI](https://img.shields.io/badge/PowerBI-integrado-yellow)
 ![Status](https://img.shields.io/badge/Status-Finalizado-blue)
 ![Build](https://img.shields.io/badge/build-success-success)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI)](https://github.com/cristianorr38/Desafio-DIO-Relatorio-Gerencial-Vendas)
 [![GitHub Stars](https://img.shields.io/github/stars/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI?style=social)](https://github.com/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI)
-![GitHub last commit](https://img.shields.io/github/last-commit/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI
-)
+![GitHub last commit](https://img.shields.io/github/last-commit/cristianorr38/Desafio-Modelagem-Transformacao-dados-DAX-Power-BI)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 Este repositório contém a resolução do desafio de projeto focado na transformação de uma base de dados *flat* (tabela única) em um modelo **Star Schema**.  
@@ -14,18 +13,18 @@ O objetivo principal foi aplicar técnicas de **ETL** e **modelagem dimensional*
 
 ---
 
-## 📌 Contexto do Desafio
+### 📌 Contexto do Desafio
 A partir do dataset **Financial Sample**, foi necessário decompor a tabela única em tabelas de dimensão e uma tabela fato, garantindo que cada atributo descritivo fosse corretamente normalizado.
 
 ---
 
-## 🏗️ Estrutura do Modelo Dimensional (Star Schema)
+### 🏗️ Estrutura do Modelo Dimensional (Star Schema)
 
-### 1. Tabela Fato
+#### 1. Tabela Fato
 **F_Vendas**: Contém as métricas de desempenho e as chaves estrangeiras.  
 **Campos:** SK_ID, ID_Produto, Produto, Units Sold, Sales Price, Discount Band, Segment, Country, Sales, Profit, Date.
 
-### 2. Tabelas de Dimensão
+#### 2. Tabelas de Dimensão
 - **D_Produtos**: Agrupamento de informações de vendas por produto.  
   *Métricas Calculadas:* Média de Unidades Vendidas, Média do Valor de Vendas, Mediana, Valor Máximo e Mínimo.
 
@@ -37,14 +36,14 @@ A partir do dataset **Financial Sample**, foi necessário decompor a tabela úni
 
 - **D_Calendário**: Tabela dimensional de tempo criada via DAX.
 
-### 3. Tabela de Backup
+#### 3. Tabela de Backup
 **Financials_origem**: Mantida no modelo em modo oculto, servindo como base de segurança e *staging* para as demais transformações.
 
 ---
 
-## 🛠️ Transformações e Funções DAX
+### 🛠️ Transformações e Funções DAX
 
-### Criação da Tabela de Calendário
+#### Criação da Tabela de Calendário
 Utilizei a função `CALENDAR()` para garantir uma dimensão temporal dinâmica e contínua:
 
 ```DAX
@@ -64,7 +63,7 @@ ADDCOLUMNS (
 
 ---
 
-## 🛠️ Processos de ETL (Power Query)
+### 🛠️ Processos de ETL (Power Query)
 
 - **Criação de Índices:** Implementação de índices condicionais para garantir a unicidade dos produtos.  
 - **Agrupamento (Group By):** Utilizado na tabela D_Produtos para consolidar métricas estatísticas de vendas diretamente na carga dos dados.  
@@ -73,70 +72,98 @@ ADDCOLUMNS (
 
 ---
 
-📐 Diagrama Dimensional (Star Schema)
+📐  **Diagrama Dimensional (Star Schema)**
 
 <img width="1917" height="861" alt="Diagrama_Dimensional_StarSchema_FinancialSample" src="https://github.com/user-attachments/assets/827d4dbc-2554-4d2e-b396-d6f927e71777" /><br>
 
-```erDiagram
+![icon](https://github.com/user-attachments/assets/d37d097e-e2cc-47c4-9021-ac7c4dabb9ff) &nbsp; **Diagrama Mermaid**
+
+```mermaid
+erDiagram
     F_Vendas {
         int SK_ID
         int ID_Produto
-        string Produto
-        int Units_Sold
-        float Sales_Price
-        string Discount_Band
-        string Segment
-        string Country
+        int ID_Categoria
         float Sales
+        float Gross_Sales
         float Profit
+        float Sale_Price
+        int Units_Sold
+        float Discounts
         date Date
     }
 
     D_Produtos {
         int ID_Produto
         string Produto
+        float Media_Manufatura
+        float Media_Unidades_Vendidas
+        float Media_Valor_Vendas
+        float Mediana_Valor_Vendas
+        float Valor_Max_Venda
+        float Valor_Min_Venda
     }
 
-    D_Produtos_Detalhes {
+    D_Produto_Detalhes {
         int ID_Produto
         string Discount_Band
+        float Manufacturing_Price
         float Sale_Price
         int Units_Sold
-        float Manufacturing_Price
     }
 
     D_Descontos {
         string Discount_Band
         float Percentual
+        int ID_Produto
     }
 
-    D_Detalhes {
+    D_Categorias {
+        int ID_Categoria
         string Segment
         string Country
     }
 
-    D_Calendário {
+    D_Detalhes {
+        int ID_Detalhe
+        int ID_Produto
+        string Product
+        float Sales
+        float Profit
+        float COGS
+        string Month_Name
+        int Month_Number
+        int Year
+    }
+
+    D_Calendario {
         date Date
         int Ano
-        int Mês
-        int Dia
+        int Mes_Num
+        string Mes_Nome
+        string Dia_Semana
+        int Trimestre
+        int Semestre
     }
 
     F_Vendas ||--o{ D_Produtos : "referencia"
-    F_Vendas ||--o{ D_Produtos_Detalhes : "referencia"
+    F_Vendas ||--o{ D_Produto_Detalhes : "referencia"
     F_Vendas ||--o{ D_Descontos : "referencia"
+    F_Vendas ||--o{ D_Categorias : "referencia"
     F_Vendas ||--o{ D_Detalhes : "referencia"
-    F_Vendas ||--o{ D_Calendário : "referencia"
+    F_Vendas ||--o{ D_Calendario : "referencia"
 ```
 
 ---
 
-## 📊 Progresso do projeto
+### ✅ Progresso do projeto
 
 Progresso atual:  
 `███████████████████████` **100% Concluído**
 
-## 🚀 Como Visualizar o Projeto
+---
+
+### 🚀 Como Visualizar o Projeto
 
 1. Clone este repositório.  
 2. Abra o arquivo `.pbix` no **Power BI Desktop**.  
@@ -144,20 +171,21 @@ Progresso atual:
 
 ---
 
-# 📦 Release Notes - v1.0.0
+### 📦 Release Notes - v1.0.0
 
-## 🎯 Título
+#### 🎯 Título
 Versão Final - Desafio-Modelagem-Transformacao-dados-DAX-Power-BI
 
----
-
-## 👨‍💻 Autor
-
+#### 👨‍💻 Autor
 **Cristiano**  
 Analista de Sistemas focado em **Data Science** e **Engenharia de Dados**.
 
+#### 📝 Descrição
+Esta é a primeira versão oficial do projeto **Desafio DIO - Modelagem e Transformação de dados com DAX no Power BI**.  
+O projeto foi desenvolvido utilizando **Power BI Desktop**, com documentação completa no GitHub.
+
 ---
 
-## 📜 Licença
+#### 📜 Licença
 Este projeto está licenciado sob a **MIT License**.  
 Sinta-se livre para usar, modificar e compartilhar, mantendo os créditos ao autor.
